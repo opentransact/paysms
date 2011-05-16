@@ -62,6 +62,24 @@ class PaySMS < Sinatra::Base
       puts "URL: #{@site_url}"
       @site_url+path
     end
+    
+    def send_sms(phone,text)
+      Twilio::Sms.message(ENV["TWILIO_NUMBER"], phone, text)
+    end
+    
+    def register_phone(phone)
+      @code = ActiveSupport::SecureRandom.hex
+      $redis.setex("phone:auth:#{@code}", 1.day.from_now.to_i, phone)
+      
+      if $redis.get("phone:number:#{phone}") 
+        text = "Follow this link to log in to PayS.MS http://pays.ms/a/#{@code}"
+      else
+        text = "Welcome to PayS.MS. Follow this link to register http://pays.ms/a/#{@code}"
+      end
+      
+      @message = send_sms(phone,text)
+      
+    end
   end
 
   get '/' do
@@ -73,16 +91,7 @@ class PaySMS < Sinatra::Base
     @phone.gsub! /[^\d]/, ''
     
     if @phone && @phone.size==10
-      @code = ActiveSupport::SecureRandom.hex
-      $redis.setex("phone:auth:#{@code}", 1.day.from_now.to_i, params[:phone])
-      
-      if $redis.get("phone:number:#{@phone}") 
-        text = "Follow this link to log in to PayS.MS http://pays.ms/a/#{@code}"
-      else
-        text = "Welcome to PayS.MS. Follow this link to register http://pays.ms/a/#{@code}"
-      end
-      
-      @message = Twilio::Sms.message(ENV["TWILIO_NUMBER"], params[:phone], text)
+      register_phone @phone
       haml :register
     else
       @phone = params[:phone]
@@ -106,6 +115,16 @@ class PaySMS < Sinatra::Base
   end
   
   post "/twilio/sms" do
+    Rails.logger.info "NEW SMS"
+    Rails.logger.info params.inspect
+    if params[:AccountSid]==ENV["TWILIO_KEY"]
+      @phone = params[:From].gsub! /[^\d]/, ''
+      if $redis.get("phone:number:#{@phone}")
+        send_sms @phone, "PayS.MS: You are authenticated"
+      else
+        register_phone @phone
+      end
+    end
   end
   
   get "/link" do
