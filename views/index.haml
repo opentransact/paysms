@@ -2,6 +2,13 @@
   %h3
     Logged in as
     =session[:phone]
+  -if opentransact_token
+    %p
+      Your phone is linked with
+      %a{:href=>ENV["OPENTRANSACT_URL"]}= ENV["OPENTRANSACT_URL"]
+  -else
+    %p
+      %a{:href=>"/link"} Link PicoMoney
   %p
     %form{:action=>"/logout", :method=>:post}
       %button Logout

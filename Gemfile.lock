@@ -19,7 +19,13 @@ GEM
       configuration (>= 0.0.5)
       rake (>= 0.8.1)
     mime-types (1.16)
+    multi_json (1.0.2)
+    multi_xml (0.2.2)
     oauth (0.4.4)
+    opentransact (0.1.1)
+      multi_json
+      multi_xml
+      oauth (~> 0.4.4)
     rack (1.2.2)
     rake (0.8.7)
     redis (2.2.0)
@@ -47,6 +53,7 @@ DEPENDENCIES
   heroku
   i18n
   oauth
+  opentransact
   redis
   sinatra
   thin

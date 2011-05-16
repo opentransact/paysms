@@ -9,3 +9,4 @@ gem "heroku"
 gem 'activesupport'
 gem 'thin'
 gem 'i18n'
+gem 'opentransact'
