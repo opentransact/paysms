@@ -30,7 +30,7 @@ class PaySMS < Sinatra::Base
     
     if @phone && @phone.size==10
       @code = ActiveSupport::SecureRandom.hex
-      $redis.set("phone:auth:#{@code}",params[:phone])
+      $redis.setex("phone:auth:#{@code}", 1.day.from_now.to_i, params[:phone])
       
       if $redis.get("phone:number:#{@phone}") 
         text = "Follow this link to log in to PayS.MS http://pays.ms/a/#{@code}"
@@ -53,7 +53,7 @@ class PaySMS < Sinatra::Base
       $redis.set("phone:number:#{@phone}",1)
       session[:phone] = @phone
     end
-    haml :auth
+    redirect "/"
   end
   
   post "/logout" do
