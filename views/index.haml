@@ -1,2 +1,12 @@
-%h1 PayS.MS
-%h2 Mobile payments for OpenTransact
+-if session[:phone]
+  %h3
+    Logged in as
+    =session[:phone]
+  %p
+    %form{:action=>"/logout", :method=>:post}
+      %button Logout
+-else
+  %form{:action=>"/register",:method=>:post}
+    %label{:for=>"phone"}
+    %input{:type=>"tel", :name=>"phone", :autofocus=>true, :value=>@phone}
+    %button Register

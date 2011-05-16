@@ -6,3 +6,6 @@ gem "oauth"
 gem "twilio"
 gem "haml"
 gem "heroku"
+gem 'activesupport'
+gem 'thin'
+gem 'i18n'
