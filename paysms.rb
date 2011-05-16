@@ -115,8 +115,8 @@ class PaySMS < Sinatra::Base
   end
   
   post "/twilio/sms" do
-    Rails.logger.info "NEW SMS"
-    Rails.logger.info params.inspect
+    puts "NEW SMS"
+    puts params.inspect
     if params[:AccountSid]==ENV["TWILIO_KEY"]
       @phone = params[:From].gsub! /[^\d]/, ''
       if $redis.get("phone:number:#{@phone}")
