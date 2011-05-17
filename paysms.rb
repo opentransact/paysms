@@ -141,7 +141,7 @@ class PaySMS < Sinatra::Base
       if $redis.get("phone:number:#{@phone}")
         
         if currency
-          if params[:Message] =~ /(balance|pay +(\d+) +(([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,}))( +(.*))?)/i
+          if params[:Body] =~ /(balance|pay +(\d+) +(([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,}))( +(.*))?)/i
             if $1.downcase == "balance"
               send_sms @phone, "PaySMS: Your balance is #{currency.balance}"
             else
