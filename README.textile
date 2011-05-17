@@ -30,7 +30,10 @@ export OPENTRANSACT_NAME="DevCredits"
 # Register at http://twilio.com for these
 export TWILIO_KEY="..."
 export TWILIO_SECRET="..."
-export TWILIO_NUMBER="..."</code></pre>
+export TWILIO_NUMBER="..."
+
+# Optional AdSense account id
+export ADSENSE="..."</code></pre>
 
 On Heroku use:
 
