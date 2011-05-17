@@ -4,6 +4,7 @@ require 'twilio'
 require 'oauth'
 require 'oauth/consumer'
 require 'oauth/token'
+require 'opentransact'
 class PaySMS < Sinatra::Base
   enable :sessions, :logging
   set :haml, {:format => :html5 }
@@ -44,9 +45,7 @@ class PaySMS < Sinatra::Base
     
     def opentransact_token
       @opentransact_token ||= begin
-        puts "TOKEN KEY: tokens:#{current_phone}:#{ENV["OPENTRANSACT_URL"]}"
         ts = $redis.get("tokens:#{current_phone}:#{ENV["OPENTRANSACT_URL"]}")
-        puts "TOKEN: #{ts}"
         
         if ts
           t = ts.split(/&/)
@@ -58,7 +57,6 @@ class PaySMS < Sinatra::Base
     def currency
       @currency ||= begin
         if opentransact_token
-          puts "TOKEN: #{opentransact_token.inspect}"
           OpenTransact::Asset.new ENV["OPENTRANSACT_URL"],
                     :token=>opentransact_token.token, :secret=>opentransact_token.secret,
                     :consumer_key=>ENV["OPENTRANSACT_KEY"], :consumer_secret=> ENV["OPENTRANSACT_SECRET"]
@@ -144,7 +142,7 @@ class PaySMS < Sinatra::Base
         
         if currency
           if params[:Message] =~ /(balance|pay +(\d+) +(([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,}))( +(.*))?)/i
-            if $1 == "balance"
+            if $1.downcase == "balance"
               send_sms @phone, "PaySMS: Your balance is #{currency.balance}"
             else
               t = currency.transfer $2.to_i, $3, $7
