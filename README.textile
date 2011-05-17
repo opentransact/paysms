@@ -4,4 +4,41 @@ PaySMS allows you to send money via text messages (SMS). It is created using "Op
 
 As a proof of concept this version currently can transfer "PicoMoney DevCredits":https://picomoney.com/devcredits. Please sign up and click the button to issue yourself some devcredits.
 
-More docs coming shortly...
+h2. Installation
+
+PayS.MS is written in Ruby and "Sinatra":http://sinatrarb.com. It uses "Redis":http://redis.io. Both are available on "Heroku":http://heroku.com so you should be able to get a customized version up and running in less than an hour.
+
+SMS service is done using "Twilio":http://twilio.com. Feel free to fork and customize it to use another service.
+
+h3. Configuration
+
+You need your credentials from Twilio and from your chosen "OpenTransact":http://opentransact.org provider.
+
+For local development I recommend "Pow":http://pow.cx which allows you to place the following in a .powenv file.
+
+<pre><code>
+# OAuth credentials for OpenTransact provider eg https://picomoney.com/apps
+export OPENTRANSACT_KEY="..."
+export OPENTRANSACT_SECRET="..."
+
+# OpenTransact url for asset you wish to use
+export OPENTRANSACT_URL="http://picomoney.dev/devcredits"
+
+# Display name of Asset
+export OPENTRANSACT_NAME="DevCredits"
+
+# Register at http://twilio.com for these
+export TWILIO_KEY="..."
+export TWILIO_SECRET="..."
+export TWILIO_NUMBER="..."</code></pre>
+
+On Heroku use:
+
+<pre><code>heroku config:add OPENTRANSACT_KEY:... OPENTRANSACT_SECRET:... etc.</code></pre>
+
+h2. Future plans
+
+Small plans
+
+* I want to modularize most of the business logic into a Phone class.
+* An installation should be able to support more than one OpenTransact asset at a time.
