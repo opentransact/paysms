@@ -40,7 +40,10 @@ class PaySMS < Sinatra::Base
     
     def opentransact_token
       @opentransact_token ||= begin
+        puts "TOKEN KEY: tokens:#{session[:phone]}:#{ENV["OPENTRANSACT_URL"]}"
         ts = $redis.get("tokens:#{session[:phone]}:#{ENV["OPENTRANSACT_URL"]}")
+        puts "TOKEN: #{opentransact_token.inspect}"
+        
         if logged_in? && ts
           t = ts.split(/&/)
           {:token=>t[0], :secret=>t[1]}
@@ -51,6 +54,7 @@ class PaySMS < Sinatra::Base
     def currency
       @currency ||= begin
         if opentransact_token
+          puts "TOKEN: #{opentransact_token.inspect}"
           OpenTransact::Asset.new ENV["OPENTRANSACT_URL"],
                     :token=>opentransact_token.token, :secret=>opentransact_token.secret,
                     :consumer_key=>ENV["OPENTRANSACT_KEY"], :consumer_secret=> ENV["OPENTRANSACT_SECRET"]
@@ -135,7 +139,7 @@ class PaySMS < Sinatra::Base
       if $redis.get("phone:number:#{@phone}")
         
         if currency
-          if params[:Message] =~ /(balance|pay +(\d+) +(([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,}))( +(.*))?)/
+          if params[:Message] =~ /(balance|pay +(\d+) +(([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,}))( +(.*))?)/i
             if $1 == "balance"
               send_sms @phone, "PaySMS: Your balance is #{currency.balance}"
             else
