@@ -34,13 +34,11 @@ a img {border: 0;}
 .gigantic {
 	font-size: 110px;
 	line-height: 120px;
-	letter-spacing: -2px;
 }
 
 .huge, h1 {
 	font-size: 68px;
 	line-height: 72px;
-	letter-spacing: -1px;
 }
 
 .large, h2 {
@@ -83,6 +81,42 @@ fieldset input {
   font-face: "adelle-1","adelle-2";
   display: block;
 }
+/* Button CSS courtesy of http://dryicons.com/demos/css3-linear-gradient-buttons-generator
+*/
+button {
+  display: inline-block;
+	cursor: pointer;
+	text-decoration:none;
+	font-size: 26px;
+	line-height: 36px;
+  font-face: "adelle-1","adelle-2";
+	border: 1px solid rgb(51, 102, 0);
+	padding: 10px 10px 10px 10px;
+	color:rgb(255, 255, 255);
+	text-shadow: 0px 0px 5px rgb(51, 51, 0);
+	border-radius:5px 5px 5px 5px;
+	-moz-border-radius:5px 5px 5px 5px;
+	-webkit-border-radius:5px 5px 5px 5px;
+	box-shadow:0px 0px 0px rgb(0, 0, 0);
+	-moz-box-shadow:0px 0px 0px rgb(0, 0, 0);
+	-webkit-box-shadow:0px 0px 0px rgb(0, 0, 0);
+	background-color: rgb(51, 204, 0);
+	background-image:linear-gradient(-90deg, rgb(51, 204, 0), rgb(51, 153, 0));
+	background-image:-webkit-gradient(linear, 50% 0%, 50% 100%, from(rgb(51, 204, 0)), to(rgb(51, 153, 0)));
+	background-image:-moz-linear-gradient(-90deg, rgb(51, 204, 0), rgb(51, 153, 0));
+	-webkit-appearance: none;
+}
+button:hover{
+	background-image:linear-gradient(-90deg, rgb(51, 153, 51), rgb(51, 102, 51));
+	background-image:-webkit-gradient(linear, 50% 0%, 50% 100%, from(rgb(51, 153, 51)), to(rgb(51, 102, 51)));
+	background-image:-moz-linear-gradient(-90deg, rgb(51, 153, 51), rgb(51, 102, 51));
+}
+button:active{
+	background-image:linear-gradient(-90deg, rgb(51, 255, 0), rgb(51, 204, 0));
+	background-image:-webkit-gradient(linear, 50% 0%, 50% 100%, from(rgb(51, 255, 0)), to(rgb(51, 204, 0)));
+	background-image:-moz-linear-gradient(-90deg, rgb(51, 255, 0), rgb(51, 204, 0));
+}
+
 body {
 	font: 16px/24px "adelle-1","adelle-2";
 }
@@ -95,6 +129,9 @@ p {
 	line-height: 18px;
 }
 
+footer {
+  margin-top: 3em;
+}
 /* Selection colours (easy to forget) */
 
 ::selection 	 	{background: rgb(255,255,158);}

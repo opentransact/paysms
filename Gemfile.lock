@@ -23,7 +23,7 @@ GEM
     multi_json (1.0.2)
     multi_xml (0.2.2)
     oauth (0.4.4)
-    opentransact (0.1.1)
+    opentransact (0.1.2)
       multi_json
       multi_xml
       oauth (~> 0.4.4)
