@@ -17,19 +17,44 @@
     %fieldset
       %legend Register your Phone
       %p
-        %label{:for=>"phone"} Enter phone number
+        %label{:for=>"phone"} Enter US phone number
         %input{:type=>"tel", :name=>"phone", :autofocus=>true, :value=>@phone, :size=>10}
       %p
         %button Register
+      %p
+        or send SMS message to:
+      .large
+        %a{:href=>"sms:#{ENV["TWILIO_NUMBER"]}"}= ENV["TWILIO_NUMBER"]
+        
 
 %h4
   =$redis.get("payments")||0
   payments made totaling
   =$redis.get("payments_amount")||0
   %a{:href=>ENV["OPENTRANSACT_URL"]}= ENV["OPENTRANSACT_NAME"]
+
+%p 
 :textile
   PaySMS allows you to send money via text messages (SMS). It is created using "OpenTransact":http://opentransact.org and is released as "open source":https://github.com/opentransact/paysms on GitHub.
   
   This installation currently transfers "#{ENV["OPENTRANSACT_NAME"]}":#{ENV["OPENTRANSACT_URL"]}.
   
+  You must first register your phone with the above form and then link your account at "#{ENV["OPENTRANSACT_NAME"]}":#{ENV["OPENTRANSACT_URL"]}. Please signup there if you don't already have an account.
+
+%p
+  Now simply send short commands to 
+  %a{:href=>"sms:#{ENV["TWILIO_NUMBER"]}"}= ENV["TWILIO_NUMBER"]
+  
+%table
+  %tr
+    %th You want to...
+    %th 
+      Send this to
+      %a{:href=>"sms:#{ENV["TWILIO_NUMBER"]}"}= ENV["TWILIO_NUMBER"]
+  %tr
+    %td Get balance 
+    %td.command Balance
+  %tr
+    %td Pay someone 
+    %td.command Pay 12 support@picomoney.com just testing
   

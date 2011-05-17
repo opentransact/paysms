@@ -96,6 +96,10 @@ class PaySMS < Sinatra::Base
       Twilio::Sms.message(ENV["TWILIO_NUMBER"], phone, text)
     end
     
+    def send_help
+      send_sms "PaySMS: To pay someone send 'pay 12 support@picomoney.com', to fetch balance send 'balance'"
+    end
+    
     def register_phone(msg=nil)
       puts "register_phone: #{phone}"
       @code = ActiveSupport::SecureRandom.hex
@@ -160,7 +164,7 @@ class PaySMS < Sinatra::Base
               send_sms "PaySMS: You sent #{$2} #{ENV["OPENTRANSACT_NAME"]} to #{$3}"
             end
           else
-            send_sms "PaySMS: To pay someone send 'pay 12 support@picomoney.com', to fetch balance send 'balance'"
+            send_help
           end
         else
           register_phone "Please link your PicoMoney account"
@@ -190,6 +194,7 @@ class PaySMS < Sinatra::Base
       @access_token = @request_token.get_access_token :oauth_verifier=>params[:oauth_verifier]
       session[params[:oauth_token]]=nil
       $redis.set("tokens:#{session[:phone]}:#{ENV["OPENTRANSACT_URL"]}",[ @access_token.token, @access_token.secret].join("&"))  
+      send_help
     end
     redirect "/"
   end
