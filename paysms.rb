@@ -58,7 +58,7 @@ class PaySMS < Sinatra::Base
       @currency ||= begin
         if opentransact_token
           OpenTransact::Asset.new ENV["OPENTRANSACT_URL"],
-                    :token=>opentransact_token.token, :secret=>opentransact_token.secret,
+                    :token=>opentransact_token[:token], :secret=>opentransact_token[:secret],
                     :consumer_key=>ENV["OPENTRANSACT_KEY"], :consumer_secret=> ENV["OPENTRANSACT_SECRET"]
         end
       end
