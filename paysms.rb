@@ -38,10 +38,14 @@ class PaySMS < Sinatra::Base
       end
     end
     
+    def current_phone
+      @phone ||= session[:phone]
+    end
+    
     def opentransact_token
       @opentransact_token ||= begin
-        puts "TOKEN KEY: tokens:#{session[:phone]}:#{ENV["OPENTRANSACT_URL"]}"
-        ts = $redis.get("tokens:#{session[:phone]}:#{ENV["OPENTRANSACT_URL"]}")
+        puts "TOKEN KEY: tokens:#{current_phone}:#{ENV["OPENTRANSACT_URL"]}"
+        ts = $redis.get("tokens:#{current_phone}:#{ENV["OPENTRANSACT_URL"]}")
         puts "TOKEN: #{ts}"
         
         if logged_in? && ts
