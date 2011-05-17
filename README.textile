@@ -1,0 +1,7 @@
+h1. PayS.MS a OpenTransact SMS gateway
+
+PaySMS allows you to send money via text messages (SMS). It is created using "OpenTransact":http://opentransact.org and is released as "open source":https://github.com/opentransact/paysms on GitHub.
+
+As a proof of concept this version currently can transfer "PicoMoney DevCredits":https://picomoney.com/devcredits. Please sign up and click the button to issue yourself some devcredits.
+
+More docs coming shortly...
