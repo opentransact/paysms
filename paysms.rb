@@ -48,11 +48,9 @@ class PaySMS < Sinatra::Base
         ts = $redis.get("tokens:#{current_phone}:#{ENV["OPENTRANSACT_URL"]}")
         puts "TOKEN: #{ts}"
         
-        if logged_in? && ts
+        if ts
           t = ts.split(/&/)
           {:token=>t[0], :secret=>t[1]}
-        else
-          nil
         end
       end
     end
@@ -64,8 +62,6 @@ class PaySMS < Sinatra::Base
           OpenTransact::Asset.new ENV["OPENTRANSACT_URL"],
                     :token=>opentransact_token.token, :secret=>opentransact_token.secret,
                     :consumer_key=>ENV["OPENTRANSACT_KEY"], :consumer_secret=> ENV["OPENTRANSACT_SECRET"]
-        else
-          nil
         end
       end
     end
