@@ -53,13 +53,41 @@ a img {border: 0;}
 	line-height: 36px;
 }
 
-.big, h4 {
+.big, h4, fieldset {
 	font-size: 22px;
 	line-height: 30px;
 }
+h1 a, h2 a, h3 a, h4 a, h5 a {
+  text-decoration: none;
+}
+h1 a:hover, h2 a:hover, h3 a:hover, h4 a:hover, h5 a:hover {
+  color: #006;
+  text-decoration: none;
+}
 
+fieldset {
+  background: rgb(132,132,132);
+  margin: 1em 0;
+  padding: 1em;
+  color: white;
+}
+fieldset legend {
+  background: rgb(132,132,132);
+  padding: 0.2em 1em;
+}
+label {
+  display: block;
+}
+fieldset input {
+  font-size: 200%;
+  font-face: "adelle-1","adelle-2";
+  display: block;
+}
 body {
-	font: 16px/24px Georgia, serif;
+	font: 16px/24px "adelle-1","adelle-2";
+}
+p {
+  margin-bottom: 1em;
 }
 
 .small, small {

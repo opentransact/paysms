@@ -1,6 +1,7 @@
 GEM
   remote: http://rubygems.org/
   specs:
+    RedCloth (4.2.7)
     activesupport (3.0.7)
     builder (2.1.2)
     configuration (1.2.0)
@@ -48,6 +49,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  RedCloth
   activesupport
   haml
   heroku
