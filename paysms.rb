@@ -48,6 +48,16 @@ class PaySMS < Sinatra::Base
       end
     end
     
+    def currency
+      @currency ||= begin
+        if opentransact_token
+          OpenTransact::Asset.new ENV["OPENTRANSACT_URL"],
+                    :token=>opentransact_token.token, :secret=>opentransact_token.secret,
+                    :consumer_key=>ENV["OPENTRANSACT_KEY"], :consumer_secret=> ENV["OPENTRANSACT_SECRET"]
+        end
+      end
+    end
+    
     def url_for(path)
       @site_url ||= begin
         url = request.scheme + "://"
@@ -67,11 +77,14 @@ class PaySMS < Sinatra::Base
       Twilio::Sms.message(ENV["TWILIO_NUMBER"], phone, text)
     end
     
-    def register_phone(phone)
+    def register_phone(phone, msg=nil)
+      phone = "+1"+phone if phone.size==10 # internationalize US number
       @code = ActiveSupport::SecureRandom.hex
       $redis.setex("phone:auth:#{@code}", 1.day.from_now.to_i, phone)
       
-      if $redis.get("phone:number:#{phone}") 
+      if msg.present?
+        text = "#{msg} http://pays.ms/a/#{@code}"
+      elsif $redis.get("phone:number:#{phone}") 
         text = "Follow this link to log in to PayS.MS http://pays.ms/a/#{@code}"
       else
         text = "Welcome to PayS.MS. Follow this link to register http://pays.ms/a/#{@code}"
@@ -88,9 +101,9 @@ class PaySMS < Sinatra::Base
   
   post "/register" do
     @phone = params[:phone]
-    @phone.gsub! /[^\d]/, ''
+    @phone.gsub! /\+[^\d]/, ''
     
-    if @phone && @phone.size==10
+    if @phone && @phone=~/(\+1)?\d{10}/
       register_phone @phone
       haml :register
     else
@@ -120,7 +133,22 @@ class PaySMS < Sinatra::Base
     if params[:AccountSid]==ENV["TWILIO_KEY"]
       @phone = params[:From].gsub! /[^\d]/, ''
       if $redis.get("phone:number:#{@phone}")
-        send_sms @phone, "PayS.MS: You are authenticated"
+        
+        if currency
+          if params[:Message] =~ /(balance|pay +(\d+) +(([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,}))( +(.*))?)/
+            if $1 == "balance"
+              send_sms @phone, "PaySMS: Your balance is #{currency.balance}"
+            else
+              t = currency.transfer $2.to_i, $3, $7
+              send_sms @phone, "PaySMS: You sent #{$2} to #{$3}"
+            end
+          else
+            send_sms @phone, "PaySMS: To pay someone send 'pay 12 support@picomoney.com', to fetch balance send 'balance'"
+          end
+        else
+          register_phone @phone, "Please link your PicoMoney account"
+        end
+        
       else
         register_phone @phone
       end
