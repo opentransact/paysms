@@ -45,16 +45,9 @@
   Now simply send short commands to 
   %a{:href=>"sms:#{ENV["TWILIO_NUMBER"]}"}= ENV["TWILIO_NUMBER"]
   
-%table
-  %tr
-    %th You want to...
-    %th 
-      Send this to
-      %a{:href=>"sms:#{ENV["TWILIO_NUMBER"]}"}= ENV["TWILIO_NUMBER"]
-  %tr
-    %td Get balance 
-    %td.command Balance
-  %tr
-    %td Pay someone 
-    %td.command Pay 12 support@picomoney.com just testing
+%dl.commands
+  %dt Get balance 
+  %dd.command Balance
+  %dt Pay someone 
+  %dd.command Pay 12 support@picomoney.com just testing
   

@@ -148,9 +148,13 @@ table tr td {
 table tr th {
   text-align: left;
 }
-table tr td.command {
+
+dl.commands dd.command {
+  background: white;
+  padding: 2px 5px;
   font-face: 'monaco', 'bitstream vera sans mono', 'lucida console', 'andale mono', 'lucida console', monospace;
   color: #222;
+  margin-bottom: 1em;
 }
 /* Selection colours (easy to forget) */
 
@@ -228,6 +232,11 @@ px      68    160    252    */
   	line-height: 30px;
   }
   
+  table tr td {
+    font-size: 13px;
+  	line-height: 18px;
+  	
+  }
 }
 
 
